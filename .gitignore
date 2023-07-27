@@ -1,0 +1,9 @@
+.DS_Store
+.vscode/
+CMakeCache.txt
+CMakeFiles/
+WebSocketOSC
+Makefile
+cmake_install.cmake
+oscpack/
+json.hpp
