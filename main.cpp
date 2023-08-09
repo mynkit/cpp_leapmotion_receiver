@@ -63,23 +63,44 @@ int main() {
             vector<string> handTypeList;
 
             // Send received message via OSC
-            char osc_buffer[6144];
-            osc::OutboundPacketStream p(osc_buffer, 6144);
+            char osc_bufferf[6144];
+            char osc_bufferh[6144];
+            osc::OutboundPacketStream p(osc_bufferf, 6144);
+            osc::OutboundPacketStream q(osc_bufferh, 6144);
             p << osc::BeginBundleImmediate
               << osc::BeginMessage("/lm/finger");
+            q << osc::BeginBundleImmediate
+              << osc::BeginMessage("/lm/hand");
 
             if (lmData.contains("hands")) {
                 json hands = lmData["hands"];
                 for (const auto& hand : hands) {
-                    if (hand.contains("id") && hand.contains("type")) {
+                    if (hand.contains("id") && hand.contains("type") && hand.contains("palmNormal") && hand.contains("palmPosition")) {
                         string handId = hand["id"].dump();
                         string handType = hand["type"];
+                        json palmNormal = hand["palmNormal"];
+                        json palmPosition = hand["palmPosition"];
                         handTypeList.push_back(handType);
                         handInfo.emplace(handId, handType);
+                        if (handType == "left") {
+                            for (const auto& palmPosition_ : palmPosition) {
+                                q << stof(palmPosition_.dump());
+                            }
+                            for (const auto& palmNormal_ : palmNormal) {
+                                q << stof(palmNormal_.dump());
+                            }
+                            q << 0;
+                        }
                     }
                 }
+
                 // handTypeListの重複削除(leftとrightのみにする)
                 set<string> handTypeSet(handTypeList.begin(), handTypeList.end());
+
+                if (handTypeSet.find("left") == handTypeSet.end()) {
+                    q << 0.0 << 0.0 << 0.0 << 0.0 << -1.0 << 0.0 << 0;
+                }
+
 
                 for (int k=0; k<2; k++) {
                     string ht = LR[k];
@@ -112,6 +133,12 @@ int main() {
                                         p << stof(tipVelocity_.dump());
                                     }
                                     p << 1;
+
+                                    if (fingerId == "1") {
+                                        json mcpPosition = pointable["mcpPosition"];
+                                        json carpPosition = pointable["carpPosition"];
+
+                                    }
                                 }
                             }
                         }
@@ -123,6 +150,9 @@ int main() {
             p << osc::EndMessage
               << osc::EndBundle;
             osc_socket.Send(p.Data(), p.Size());
+            q << osc::EndMessage
+              << osc::EndBundle;
+            osc_socket.Send(q.Data(), q.Size());
         }
 
         // エンドポイントのクローズ
