@@ -124,21 +124,24 @@ int main() {
                                 } else {
                                     string fingerId = pointable["type"].dump();
                                     json tipPosition = pointable["tipPosition"];
-                                    json tipVelocity = pointable["tipVelocity"];
                                     p << ht.c_str() << stoi(fingerId);
                                     for (const auto& tipPosition_ : tipPosition) {
                                         p << stof(tipPosition_.dump());
                                     }
-                                    for (const auto& tipVelocity_ : tipVelocity) {
-                                        p << stof(tipVelocity_.dump());
+                                    if (pointables.contains("tipVelocity")) {
+                                      json tipVelocity = pointable["tipVelocity"];
+                                      for (const auto& tipVelocity_ : tipVelocity) {
+                                          p << stof(tipVelocity_.dump());
+                                      }
+                                    } else {
+                                      p << 0.0 << 0.0 << 0.0;
                                     }
                                     p << 1;
 
-                                    if (fingerId == "1") {
-                                        json mcpPosition = pointable["mcpPosition"];
-                                        json carpPosition = pointable["carpPosition"];
-
-                                    }
+                                    // if (fingerId == "1") {
+                                    //     json mcpPosition = pointable["mcpPosition"];
+                                    //     json carpPosition = pointable["carpPosition"];
+                                    // }
                                 }
                             }
                         }

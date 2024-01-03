@@ -27,3 +27,17 @@ make
 # run
 ./WebSocketOSC
 ```
+
+Apple Silicon
+
+```
+export DYLD_LIBRARY_PATH=.:$DYLD_LIBRARY_PATH
+# Start WebSocket Server
+./Ultraleap-Tracking-WS
+```
+
+```
+cmake -DCMAKE_OSX_ARCHITECTURES="x86_64" CMakeLists.txt
+make
+./WebSocketOSC
+```
