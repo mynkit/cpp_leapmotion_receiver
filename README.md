@@ -19,6 +19,10 @@ https://github.com/nlohmann/json/blob/develop/single_include/nlohmann/json.hpp �
 
 ## Run
 
+### MacOS Intel (<= Catalina)
+
+Start WebSocket Receiver
+
 ```sh
 # Makefileの作成
 cmake CMakeLists.txt
@@ -28,15 +32,35 @@ make
 ./WebSocketOSC
 ```
 
-Apple Silicon
+### MacOS Intel (> Catalina)
 
-```
-export DYLD_LIBRARY_PATH=.:$DYLD_LIBRARY_PATH
-# Start WebSocket Server
-./Ultraleap-Tracking-WS
+Start WebSocket Server
+
+```sh
+export DYLD_LIBRARY_PATH=./MacOS-Intel:$DYLD_LIBRARY_PATH
+./MacOS-Intel/Ultraleap-Tracking-WS
 ```
 
+Start WebSocket Receiver
+
+```sh
+cmake CMakeLists.txt
+make
+./WebSocketOSC
 ```
+
+### MacOS Apple Silicon
+
+Start WebSocket Server
+
+```sh
+export DYLD_LIBRARY_PATH=./MacOS-Silicon:$DYLD_LIBRARY_PATH
+./MacOS-Silicon/Ultraleap-Tracking-WS
+```
+
+Start WebSocket Receiver
+
+```sh
 cmake -DCMAKE_OSX_ARCHITECTURES="x86_64" CMakeLists.txt
 make
 ./WebSocketOSC
