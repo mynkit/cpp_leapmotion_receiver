@@ -7,6 +7,7 @@
 ```sh
 brew install boost
 brew install rapidjson
+brew install libwebsockets
 ```
 
 - oscpack
