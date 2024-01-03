@@ -5,3 +5,5 @@ CMakeFiles/
 WebSocketOSC
 Makefile
 cmake_install.cmake
+oscpack/
+json.hpp
