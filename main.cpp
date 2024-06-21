@@ -4,8 +4,8 @@
 #include <iostream>
 #include <vector>
 #include <set>
-#include <oscpack/osc/OscOutboundPacketStream.h>
-#include <oscpack/ip/UdpSocket.h>
+#include "oscpack/osc/OscOutboundPacketStream.h"
+#include "oscpack/ip/UdpSocket.h"
 #include "json.hpp"
 
 namespace beast = boost::beast; // from <boost/beast.hpp>
